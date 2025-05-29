@@ -24,27 +24,38 @@ class BottomNavBar extends StatelessWidget {
   }
 
   Widget _buildNavItem(String label, String imageUrl) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 8),
-        Image.network(
-          imageUrl,
-          width: 28,
-          height: 28,
-          fit: BoxFit.cover,
-        ),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 15,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w500,
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 8),
+          SizedBox(
+            width: 28,
+            height: 28,
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.image_not_supported, size: 24, color: Colors.grey);
+              },
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: 5),
+          Flexible(
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 13,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -233,6 +233,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 nickname: opponentNickname,
                                 profileImage: opponentProfileImage,
                                 opponentUsername: opponentUserId,
+                                postData: postData!,
 
                               ),
                             ),

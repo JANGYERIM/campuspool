@@ -2,12 +2,14 @@ import 'package:campuspool_app/utils/user_util.dart';
 import 'package:flutter/material.dart';
 import '../../models/message.dart'; // 채팅 메시지 모델
 import '../../services/api/chat_service.dart'; // API 연동용 서비스
+import '../message/message_list_screen.dart'; // 메시지 목록 화면
 
 class ChatDetailScreen extends StatefulWidget {
   final String roomId;
   final String profileImage;
   final String nickname;
   final String opponentUsername;
+  final Map<String, dynamic> postData;
 
   const ChatDetailScreen({
     Key? key,
@@ -15,6 +17,7 @@ class ChatDetailScreen extends StatefulWidget {
     required this.profileImage,
     required this.nickname,
     required this.opponentUsername,
+    required this.postData,
   }) : super(key: key);
 
   @override
@@ -22,7 +25,7 @@ class ChatDetailScreen extends StatefulWidget {
 }
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
-  late Future<List<MessageModel>> _messages;
+  Future<List<MessageModel>>? _messages;
   final TextEditingController _messageController = TextEditingController();
   final ChatService chatService = ChatService();
   String? currentUser;
@@ -30,31 +33,35 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _initualizeChat();
+    initChat();
   }
-  
-  Future<void> _initualizeChat() async {
+
+  void initChat() async {
     currentUser = await getLoginUserId();
     if (currentUser == null) {
       // 로그인되지 않은 경우 처리
+      print('로그인되지 않은 사용자입니다.');
       Navigator.pop(context);
       return;
     }
-    // 과거 메시지 불러오기
-    _messages = chatService.fetchMessages(widget.roomId);
+    print('현재 사용자: $currentUser');
+
+    setState(() {
+      _messages = chatService.fetchMessages(widget.roomId, currentUser!);
+    });
 
     // WebSocket 연결 및 구독
-    chatService.connectToRoom(
-      roomId: widget.roomId,
-      currentUser: currentUser!,
-      onMessageReceived: (data) {
-        setState(() {
-          _messages = chatService.fetchMessages(widget.roomId);
-        });
-      },
-    );
-  }
-
+  chatService.connectToRoom(
+    roomId: widget.roomId,
+    currentUser: currentUser!,
+    onMessageReceived: (data) {
+      setState(() {
+        _messages = chatService.fetchMessages(widget.roomId, currentUser!);
+      });
+    },
+  );
+}
+  
   @override
   void dispose() {
     chatService.disconnect();
@@ -75,13 +82,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 
   Widget _buildMessage(MessageModel msg) {
+    final isMine = msg.isMe;
     return Align(
-      alignment: msg.isMe ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
-          color: msg.isMe ? const Color(0xFFEB5F5F) : const Color(0xFF8C8C8C),
+          color: isMine ? const Color(0xFFEB5F5F) : const Color(0xFF8C8C8C),
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(15),
             topRight: const Radius.circular(15),
@@ -94,7 +102,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           style: const TextStyle(
             color: Colors.white,
             fontSize: 14,
-            fontFamily: 'Poppins',
             height: 1.5,
           ),
         ),
@@ -103,6 +110,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 
   Widget _buildTripInfo() {
+    final data = widget.postData;
+    final String date = data['date'] ?? '';
+    final String departureTime = data['departureTime'] ?? '';
+    final String arrivalTime = data['arrivalTime'] ?? '';
+    final String departure = data['departure'] ?? '';
+    final String destination = data['destination'] ?? '';
+    final String fare = data['fare'] != null ? '${data['fare']}원' : '';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -111,14 +126,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('탑승 일시: 2025-04-10', style: tripTextStyle),
+            children: [
+              Text('탑승 일시: $date', style: tripTextStyle),
               SizedBox(height: 4),
-              Text('출발: 12:50 PM   도착: 12:55 PM', style: tripTextStyle),
+              Text('출발: $departureTime  도착: $arrivalTime', style: tripTextStyle),
               SizedBox(height: 4),
-              Text('출발지: 사색의 광장  /  도착지: 멀관', style: tripTextStyle),
+              Text('출발지: $departure  /  도착지: $destination', style: tripTextStyle),
               SizedBox(height: 4),
-              Text('요금: 500원', style: tripTextStyle),
+              Text('요금: $fare', style: tripTextStyle),
               SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerRight,
@@ -138,13 +153,19 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const BackButton(color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const MessageListScreen()),
+            (route) => false,
+            );
+          }
+        ),
         title: Text(widget.nickname,
             style: const TextStyle(
               color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w600,
-              fontFamily: 'Poppins',
             )),
       ),
       body: Column(
@@ -152,7 +173,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           _buildTripInfo(),
           const SizedBox(height: 8),
           Expanded(
-            child: FutureBuilder<List<MessageModel>>(
+            child: _messages ==null
+            ? const Center(child: CircularProgressIndicator())
+            : FutureBuilder<List<MessageModel>>(
               future: _messages,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -238,7 +261,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
 
 const tripTextStyle = TextStyle(
   fontSize: 13,
-  fontFamily: 'Poppins',
   fontWeight: FontWeight.w500,
   color: Colors.black87,
 );
@@ -271,7 +293,6 @@ class ReservationButton extends StatelessWidget {
             color: Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            fontFamily: 'Poppins',
           ),
         ),
       ),

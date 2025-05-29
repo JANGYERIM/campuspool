@@ -103,6 +103,7 @@ flutter:
     - assets/images/car_icon.png
     - assets/images/
     - assets/fonts/
+    - assets/images/default_profile.png
   
 
 

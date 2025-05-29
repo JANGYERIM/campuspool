@@ -18,8 +18,18 @@ class ChatRoom {
       roomId: json['roomId'],
       opponentUsername: json['username'],
       lastMessage: json['lastMessage'],
-      profileImage: json['profileImage'],
+      profileImage: json['profileImage'] ?? '',
       nickname: json['nickname'] ?? '익명',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'roomId': roomId,
+      'username': opponentUsername,
+      'lastMessage': lastMessage,
+      'profileImage': profileImage,
+      'nickname': nickname,
+    };
   }
 }

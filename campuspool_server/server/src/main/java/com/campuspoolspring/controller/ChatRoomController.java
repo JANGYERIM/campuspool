@@ -17,8 +17,8 @@ public class ChatRoomController {
     }
 
     // 💬 채팅방 목록 조회 (로그인 유저 기준)
-    @GetMapping("/rooms/{username}")
-    public List<ChatRoomSummary> getChatRooms(@PathVariable String username) {
-        return chatService.getChatRoomsForUser(username);
+    @GetMapping("/rooms/{userId}")
+    public List<ChatRoomSummary> getChatRooms(@PathVariable String userId) {
+        return chatService.getChatRoomsForUser(userId);
     }
 }
