@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>📬 1:1 Chat Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+<h2>📬 1:1 실시간 채팅 테스트</h2>
+
+<label>Sender ID: <input type="text" id="sender" value="userA"></label><br><br>
+<label>Receiver ID: <input type="text" id="receiver" value="userB"></label><br><br>
+<label>Message: <input type="text" id="message"></label><br><br>
+<button onclick="sendMessage()">Send</button>
+
+<hr>
+<h3>📨 채팅 내역</h3>
+<ul id="messageList"></ul>
+
+<script>
+    let client = null;
+    let currentSubscription = null;
+
+    function connect() {
+        client = Stomp.over(new SockJS('http://localhost:8080/ws-chat'));
+        client.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            updateRoomSubscription();
+        });
+    }
+
+
+    function updateRoomSubscription() {
+        const sender = document.getElementById('sender').value.trim();
+        const receiver = document.getElementById('receiver').value.trim();
+        if (!sender || !receiver || !client) return;
+
+        const roomId = generateRoomId(sender, receiver);
+        console.log("✅ roomId (client-side):", roomId);
+
+        // 이전 구독 제거
+        if (currentSubscription) {
+            currentSubscription.unsubscribe();
+        }
+
+        // 새 구독 구독
+        currentSubscription = client.subscribe(`/topic/chat.${roomId}`, function (message) {
+            const msg = JSON.parse(message.body);
+            const item = document.createElement('li');
+            item.textContent = `[${msg.sender}] ${msg.message}`;
+            document.getElementById('messageList').appendChild(item);
+        });
+
+        // 이전 메시지 로드
+        fetch(`/api/chat/room/${roomId}`)
+            .then(res => res.json())
+            .then(data => {
+                const messageList = document.getElementById('messageList');
+                messageList.innerHTML = '';
+                data.forEach(msg => {
+                    const item = document.createElement('li');
+                    item.textContent = `[${msg.sender}] ${msg.message}`;
+                    messageList.appendChild(item);
+                });
+            });
+    }
+
+    function generateRoomId(sender, receiver) {
+        return [sender, receiver].sort().join("_");
+    }
+
+    function sendMessage() {
+        const sender = document.getElementById('sender').value.trim();
+        const receiver = document.getElementById('receiver').value.trim();
+        const message = document.getElementById('message').value.trim();
+        if (!sender || !receiver || !message) return;
+
+        client.send("/app/chat.send", {}, JSON.stringify({
+            sender: sender,
+            receiver: receiver,
+            message: message
+        }));
+
+        document.getElementById('message').value = '';
+    }
+
+    document.getElementById('sender').addEventListener('change', updateRoomSubscription);
+    document.getElementById('receiver').addEventListener('change', updateRoomSubscription);
+
+    connect();
+</script>
+</body>
+</html>
