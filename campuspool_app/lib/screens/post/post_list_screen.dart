@@ -2,8 +2,19 @@ import 'package:flutter/material.dart';
 import '../../services/api/post_service.dart';
 import '../../models/post_summary.dart';
 import '../post/post_detail_screen.dart';
+import 'package:intl/intl.dart';
 
 class PostListScreen extends StatefulWidget {
+  final void Function({
+    required String roomId,
+    required String profileImage,
+    required String nickname,
+    required String opponentUsername,
+    required Map<String, dynamic> postData,
+  })? onChatPressed;
+
+  const PostListScreen({super.key, this.onChatPressed});
+
   @override
   State<PostListScreen> createState() => _PostListScreenState();
 }
@@ -29,12 +40,15 @@ class _PostListScreenState extends State<PostListScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
+    final timeFormat = DateFormat('HH:mm'); // 이 줄은 build() 메서드 안에 선언하거나 클래스 멤버로 선언해줘야 함
+
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
           const SizedBox(height: 50),
+          // 🔍 검색창
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
@@ -59,9 +73,7 @@ class _PostListScreenState extends State<PostListScreen> {
                 ),
                 const SizedBox(width: 10),
                 GestureDetector(
-                  onTap: () {
-                    _loadPosts();
-                  },
+                  onTap: _loadPosts,
                   child: Container(
                     width: 73,
                     height: 30,
@@ -86,6 +98,8 @@ class _PostListScreenState extends State<PostListScreen> {
               ],
             ),
           ),
+
+          // 🧭 탭 전환
           Container(
             height: 56,
             color: Colors.white,
@@ -123,7 +137,10 @@ class _PostListScreenState extends State<PostListScreen> {
               ],
             ),
           ),
+
           const Divider(height: 2, thickness: 2, color: Colors.white),
+
+          // 📋 게시물 목록
           Expanded(
             child: FutureBuilder<List<PostSummary>>(
               future: _postsFuture,
@@ -133,43 +150,46 @@ class _PostListScreenState extends State<PostListScreen> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('에러 발생: ${snapshot.error}', style: theme.bodyLarge));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(
+                  return const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.directions_car_outlined, size: 50, color: Color(0xFFEB5F5F)),
-                        const SizedBox(height: 16),
-                        Text('등록된 게시물이 없습니다.', style: theme.bodyLarge),
+                        Icon(Icons.directions_car_outlined, size: 50, color: Color(0xFFEB5F5F)),
+                        SizedBox(height: 16),
+                        Text('등록된 게시물이 없습니다.'),
                       ],
                     ),
                   );
                 }
 
+                final posts = snapshot.data!;
+
                 return RefreshIndicator(
-                  onRefresh: () async {
-                    _loadPosts();
-                  },
+                  onRefresh: () async => _loadPosts(),
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
-                    itemCount: snapshot.data!.length,
+                    itemCount: posts.length,
                     itemBuilder: (context, index) {
-                      final post = snapshot.data![index];
+                      final post = posts[index];
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PostDetailScreen(postId: post.id),
+                              builder: (context) => PostDetailScreen(
+                                postId: post.id,
+                                onChatPressed: widget.onChatPressed, // ✅ 콜백 그대로 전달
+                              ),
                             ),
                           );
                         },
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 18),
                           padding: const EdgeInsets.all(20),
-                          decoration: ShapeDecoration(
+                          decoration: BoxDecoration(
                             color: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                            shadows: const [
+                            borderRadius: BorderRadius.circular(4),
+                            boxShadow: const [
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 4,
@@ -185,99 +205,28 @@ class _PostListScreenState extends State<PostListScreen> {
                                 children: [
                                   Row(
                                     children: [
-                                      SizedBox(
-                                        width: 64,
-                                        child: Column(
-                                          children: [
-                                            const SizedBox(height: 9),
-                                            SizedBox(
-                                              width: 9.89,
-                                              height: 54.89,
-                                              child: Stack(
-                                                children: [
-                                                  Positioned(
-                                                    left: 4,
-                                                    top: 6,
-                                                    child: Container(
-                                                      transform: Matrix4.identity()..rotateZ(1.57),
-                                                      width: 46,
-                                                      decoration: const ShapeDecoration(
-                                                        shape: RoundedRectangleBorder(
-                                                          side: BorderSide(width: 1.5, color: Color(0xFFEB5F5F)),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Positioned(
-                                                    left: 0,
-                                                    top: 0,
-                                                    child: Container(
-                                                      width: 9.89,
-                                                      height: 9.89,
-                                                      decoration: const ShapeDecoration(
-                                                        color: Colors.white,
-                                                        shape: OvalBorder(
-                                                          side: BorderSide(width: 2, color: Color(0xFFEB5F5F)),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Positioned(
-                                                    left: 0,
-                                                    top: 45,
-                                                    child: Container(
-                                                      width: 9.89,
-                                                      height: 9.89,
-                                                      decoration: const ShapeDecoration(
-                                                        color: Colors.white,
-                                                        shape: OvalBorder(
-                                                          side: BorderSide(width: 2, color: Color(0xFFEB5F5F)),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      _buildRouteIcon(),
                                       const SizedBox(width: 10),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            '${post.departureTime.toString().substring(11, 16)}      ${post.departure}',
-                                            style: theme.bodyMedium,
-                                          ),
+                                          Text('${timeFormat.format(post.departureTime)}      ${post.departure}', style: theme.bodyMedium),
                                           const SizedBox(height: 15),
-                                          Text(
-                                            '${post.arrivalTime.toString().substring(11, 16)}      ${post.destination}',
-                                            style: theme.bodyMedium,
-                                          ),
+                                          Text('${timeFormat.format(post.arrivalTime)}      ${post.destination}', style: theme.bodyMedium),
                                         ],
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                    '${post.fare} 원',
-                                    style: theme.bodyMedium?.copyWith(
-                                      color: const Color(0xFFEB5F5F),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                  Text('${post.fare} 원', style: theme.bodyMedium?.copyWith(color: const Color(0xFFEB5F5F), fontWeight: FontWeight.w600)),
                                 ],
                               ),
                               const SizedBox(height: 20),
                               Row(
                                 children: [
-                                  Container(
-                                    width: 42,
-                                    height: 42,
-                                    decoration: const ShapeDecoration(
-                                      color: Color(0xFF9C9EAB),
-                                      shape: OvalBorder(),
-                                    ),
+                                  const CircleAvatar(
+                                    radius: 21,
+                                    backgroundColor: Color(0xFF9C9EAB),
+                                    child: Icon(Icons.person, color: Colors.white),
                                   ),
                                   const SizedBox(width: 15),
                                   Column(
@@ -297,6 +246,62 @@ class _PostListScreenState extends State<PostListScreen> {
                   ),
                 );
               },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRouteIcon() {
+    return SizedBox(
+      width: 64,
+      child: Column(
+        children: [
+          const SizedBox(height: 9),
+          SizedBox(
+            width: 9.89,
+            height: 54.89,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 4.5,
+                  top: 9,
+                  child: SizedBox(
+                    width: 1.5,
+                    height: 37,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Color(0xFFEB5F5F),
+                      ),
+                        ),
+                      ),
+                    ),
+                const Positioned(
+                  left: 0,
+                  top: 0,
+                  child: CircleAvatar(
+                    radius: 4.95,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 4.5,
+                      backgroundColor: Color(0xFFEB5F5F),
+                    ),
+                  ),
+                ),
+                const Positioned(
+                  left: 0,
+                  top: 45,
+                  child: CircleAvatar(
+                    radius: 4.95,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 4.5,
+                      backgroundColor: Color(0xFFEB5F5F),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

@@ -80,4 +80,18 @@ class AuthApi {
     }
   }
 
+  // 유저 정보 수정 (닉네임 포함)
+Future<void> updateProfile(Map<String, dynamic> data) async {
+  try {
+    final response = await _apiClient.put(ApiConstants.profileUpdate, data: data);
+    if (response.statusCode != 200) {
+      throw Exception('프로필 업데이트 실패: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('프로필 업데이트 예외 발생: $e');
+    rethrow;
+  }
+}
+
+
 }

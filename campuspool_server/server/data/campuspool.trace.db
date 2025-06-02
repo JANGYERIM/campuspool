@@ -1409,3 +1409,9 @@ USERS [42001-224]
 2025-05-29 12:10:51.103607+09:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "delete [*]* from users"; expected "identifier"; SQL statement:
 delete * from users [42001-224]
+2025-06-01 21:03:25.545433+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "delete [*]* FROM POSTS"; expected "identifier"; SQL statement:
+delete * FROM POSTS [42001-224]
+2025-06-01 21:34:21.516992+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CREATE TABLE posts"; SQL statement:
+SHOW CREATE TABLE posts [42000-224]

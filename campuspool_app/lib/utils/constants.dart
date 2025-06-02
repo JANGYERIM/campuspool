@@ -7,6 +7,9 @@ class ApiConstants {
   static const String login = '/api/auth/login';
   static const String register = '/api/auth/register';
   static const String profile = '/api/auth/profile';
+
+  // 정보 업데이트
+  static const String profileUpdate = '/api/auth/update';
   
   // 카풀 관련 엔드포인트
   static const String carpools = '/api/carpools';

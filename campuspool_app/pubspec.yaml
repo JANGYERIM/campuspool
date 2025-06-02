@@ -38,6 +38,8 @@ dependencies:
   # HTTP 통신
   dio: ^5.4.1  # REST API 통신용
   retrofit: ^4.1.0  # REST API 클라이언트 생성기
+  http: ^1.0.0
+  
 
   # 웹소켓 (실시간 채팅용)
   web_socket_channel: ^2.4.0

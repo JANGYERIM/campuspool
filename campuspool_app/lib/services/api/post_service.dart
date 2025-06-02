@@ -6,6 +6,8 @@ import 'package:intl/intl.dart'; // ✅ DateFormat 사용 가능해짐
 import 'package:shared_preferences/shared_preferences.dart';
 
 
+  
+
 class PostService {
   final String baseUrl = "http://10.0.2.2:8080/api/posts";
 
@@ -26,6 +28,22 @@ class PostService {
       throw Exception('게시물 불러오기 실패');
     }
   }
+
+  Future<Map<String, dynamic>> fetchPostById(String postId) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/$postId')); 
+      print ('[PostService] Fetching post by ID. URL: $baseUrl/$postId');
+      if (response.statusCode == 200) {
+        return jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      } else {
+        throw Exception('게시글 정보 불러오기 실패: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('게시글 조회 오류: $e');
+      throw Exception('게시글 정보를 불러오는 중 오류 발생');
+    }
+  }
+
 
   // ✅ 게시물 등록
   Future<void> createPost({

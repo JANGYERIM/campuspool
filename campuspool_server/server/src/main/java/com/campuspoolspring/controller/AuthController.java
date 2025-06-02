@@ -81,7 +81,8 @@ public class AuthController {
             Map<String, Object> profile = Map.of(
                     "email", user.getEmail(),
                     "name", user.getName(),
-                    "phoneNumber", user.getPhoneNumber()
+                    "phoneNumber", user.getPhoneNumber(),
+                    "nickname", user.getNickname() != null && !user.getNickname().isEmpty() ? user.getNickname() : "익명"
             );
 
             return ResponseEntity.ok(profile);
@@ -89,6 +90,30 @@ public class AuthController {
             return ResponseEntity.status(401).body("토큰이 유효하지 않습니다.");
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateNickname(@RequestHeader("Authorization") String authHeader,
+                                            @RequestBody Map<String, String> payload) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String email = jwtUtil.getEmailFromToken(token); // 토큰에서 이메일 추출
+
+            Optional<User> userOpt = userService.findByEmail(email);
+            if (userOpt.isEmpty()) {
+                return ResponseEntity.status(404).body("사용자 정보를 찾을 수 없습니다.");
+            }
+
+            User user = userOpt.get();
+            String newNickname = payload.get("nickname");
+            user.setNickname(newNickname);
+            userService.save(user);  // 저장
+
+            return ResponseEntity.ok(Map.of("nickname", newNickname));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("닉네임 수정 중 오류 발생");
+        }
+    }
+
 
 
     @Data

@@ -12,7 +12,6 @@ class BottomNavBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem("예약", "https://placehold.co/28x28"),
             _buildNavItem("검색", "https://placehold.co/26x27"),
             _buildNavItem("등록하기", "https://placehold.co/28x29"),
             _buildNavItem("메시지", "https://placehold.co/28x29"),

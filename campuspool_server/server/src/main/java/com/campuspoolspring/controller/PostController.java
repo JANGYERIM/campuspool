@@ -105,7 +105,8 @@ public class PostController {
             summary.setId(post.getId());
             summary.setDeparture(post.getDeparture());
             summary.setDestination(post.getDestination());
-            summary.setNickname(post.getUser().getName());
+            String nickname = post.getUser().getNickname();
+            summary.setNickname(nickname != null && !nickname.isEmpty() ? nickname : "익명");
             summary.setDate(post.getDate());
             summary.setDepartureTime(post.getDepartureTime());
             summary.setArrivalTime(post.getArrivalTime());

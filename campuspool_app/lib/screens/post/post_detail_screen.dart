@@ -1,14 +1,24 @@
 import 'package:campuspool_app/utils/user_util.dart';
 import 'package:flutter/material.dart';
-import 'package:campuspool_app/screens/message/chat_detail_screen.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class PostDetailScreen extends StatefulWidget {
   final int postId;
+  final void Function({
+    required String roomId,
+    required String profileImage,
+    required String nickname,
+    required String opponentUsername,
+    required Map<String, dynamic> postData,
+  })? onChatPressed;
 
-  const PostDetailScreen({super.key, required this.postId});
+  const PostDetailScreen({
+    super.key,
+    required this.postId,
+    this.onChatPressed,
+  });
 
   @override
   State<PostDetailScreen> createState() => _PostDetailScreenState();
@@ -73,7 +83,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            
             Align(
               alignment: Alignment.topLeft,
               child: SingleChildScrollView(
@@ -157,7 +166,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         children: [
                           const CircleAvatar(
                             radius: 35,
-                            backgroundImage: NetworkImage('https://placehold.co/62x62'),
+                            backgroundColor: Color(0xFF9C9EAB),
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 40,
+                            ),
                           ),
                           const SizedBox(width: 15),
                           Text(
@@ -181,9 +195,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               child: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  print('뒤로가기 버튼이 눌렸습니다.');
                   Navigator.pop(context);
-                }
+                },
               ),
             ),
             Positioned(
@@ -196,49 +209,36 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () async{
+                        onPressed: () async {
                           final currentUser = await getLoginUserId();
-                          print ('postData: $postData');
                           if (currentUser == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('로그인이 필요합니다.')),
                             );
                             return;
                           }
-
-                          // 게시물 작성자 ID(상대방)
                           final opponentUserId = postData!['userId'];
-                          print('opponentUserId: $opponentUserId');
-                          if (opponentUserId ==null){
+                          if (opponentUserId == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('게시물 작성자 정보를 찾을 수 없습니다.')),
                             );
                             return;
                           }
-
-                          //roomID
-                          List<String>users = [currentUser, opponentUserId]..sort();
+                          List<String> users = [currentUser, opponentUserId]..sort();
                           final roomId = '${users[0]}_${users[1]}';
-                          print('생성된 roomId: $roomId');
 
-                          // 닉네임 프로필 이미지
                           final opponentNickname = postData!['nickname'] ?? '익명';
-                          final opponentProfileImage = postData!['profileImage'] ?? 'https://placehold.co/62x62';
+                          final opponentProfileImage = postData!['profileImage'] ?? '';
 
-                          // 채팅 화면 이동
-                          Navigator.push(context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatDetailScreen(
-                                roomId: roomId,
-                                nickname: opponentNickname,
-                                profileImage: opponentProfileImage,
-                                opponentUsername: opponentUserId,
-                                postData: postData!,
-
-                              ),
-                            ),
+                          widget.onChatPressed?.call(
+                            roomId: roomId,
+                            profileImage: opponentProfileImage,
+                            nickname: opponentNickname,
+                            opponentUsername: opponentUserId,
+                            postData: postData!,
                           );
 
+                          Navigator.pop(context); // 🔙 현재 화면 닫기만 수행
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFEB5F5F),

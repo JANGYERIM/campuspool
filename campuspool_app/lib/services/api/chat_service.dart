@@ -7,6 +7,9 @@ import 'package:stomp_dart_client/stomp_frame.dart';
 import '../../models/chat_room.dart';
 import '../../models/message.dart';
 
+
+
+
 class ChatService {
   final String baseUrl = 'http://10.0.2.2:8080'; // ✅ 로컬 서버 주소 (Android 에뮬레이터용)
   StompClient? stompClient;
@@ -23,6 +26,11 @@ class ChatService {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+        print('------------------');
+        print('API 응답(fetchChatRooms -String):)');
+        print('------------------------------------------');
+        print('API 응답 파싱 후 (fetchChatRooms - List<dynamic>):');
+        print(data);
         return data.map((json) => ChatRoom.fromJson(json)).toList();
       } else {
         throw Exception('채팅방 목록 불러오기 실패: ${response.statusCode}');
@@ -105,6 +113,7 @@ class ChatService {
     required String sender,
     required String receiver,
     required String message,
+    String? postId,
   }) {
     try {
       final payload = {
@@ -112,6 +121,7 @@ class ChatService {
         'receiver': receiver,
         'message': message,
         'timestamp': DateTime.now().toIso8601String(),
+        'postId': postId,
       };
 
       stompClient?.send(
