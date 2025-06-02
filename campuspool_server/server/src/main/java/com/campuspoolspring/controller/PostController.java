@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -75,6 +76,19 @@ public class PostController {
     public List<PostSummary> getPostsForOppositeRole(@RequestParam boolean viewerIsDriver) {
         List<Post> posts = postService.findByOppositeRole(viewerIsDriver);
         return posts.stream().map(PostSummary::from).toList();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PostSummary>> searchPosts(@RequestParam("keyword") String keyword) {
+        // PostService에 있는 검색 메소드 호출 (Post 엔티티 리스트 반환)
+        List<Post> foundPosts = postService.searchPostsByKeyword(keyword);
+
+        // 검색된 Post 엔티티 리스트를 PostSummary DTO 리스트로 변환
+        List<PostSummary> summaries = foundPosts.stream()
+                .map(PostSummary::from) // 기존 PostSummary.from 메소드 재활용
+                .collect(Collectors.toList()); // Java 16+ 에서는 .toList()
+
+        return ResponseEntity.ok(summaries);
     }
 
     @Data

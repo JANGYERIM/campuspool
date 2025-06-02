@@ -31,6 +31,12 @@ spring:
       enabled: true
       path: /h2-console
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: wkddpfla3@gmail.com
+    password: 
+
 server:
   port: 8080
   address: 0.0.0.0

@@ -29,6 +29,31 @@ class PostService {
     }
   }
 
+  Future<List<PostSummary>> searchPostsByKeyword({required String keyword}) async {
+    if (keyword.trim().isEmpty) {
+      return [];
+    }
+
+    // Uri.parse().replace()를 사용하여 기본 URL에 검색 경로와 쿼리 파라미터 추가
+    final uri = Uri.parse('$baseUrl/search').replace(
+      queryParameters: {'keyword': keyword}, // 쿼리 파라미터는 자동으로 인코딩됨
+    );
+
+    print('[PostService] Searching posts by keyword. URL: $uri');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final decodedBody = utf8.decode(response.bodyBytes);
+      if (decodedBody.isEmpty) return [];
+      final List<dynamic> jsonList = jsonDecode(decodedBody);
+      return jsonList.map((e) => PostSummary.fromJson(e)).toList();
+    } else {
+      print('[PostService] Failed to search posts by keyword. Status: ${response.statusCode}, Body: ${response.body}');
+      throw Exception('키워드 검색 실패 (Status: ${response.statusCode})');
+    }
+  }
+
+
   Future<Map<String, dynamic>> fetchPostById(String postId) async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/$postId')); 

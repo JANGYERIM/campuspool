@@ -20,10 +20,12 @@ class PostListScreen extends StatefulWidget {
 }
 
 class _PostListScreenState extends State<PostListScreen> {
+  List<PostSummary> _posts = []; // 직접 데이터 리스트를 관리
   late Future<List<PostSummary>> _postsFuture;
   final PostService _postService = PostService();
   final TextEditingController _searchController = TextEditingController();
   bool _isDriverTab = false;
+  String _currentKeyword = '';
 
   @override
   void initState() {
@@ -31,9 +33,18 @@ class _PostListScreenState extends State<PostListScreen> {
     _loadPosts();
   }
 
-  void _loadPosts() {
+  void _loadPosts({String? keywordFromSearch}) { // 파라미터 이름을 명확히 변경
     setState(() {
-      _postsFuture = _postService.fetchPosts(isDriverTab: _isDriverTab);
+      if (keywordFromSearch != null && keywordFromSearch.trim().isNotEmpty) {
+        // 검색어가 제공되면, 해당 키워드로 검색 API를 호출하는 Future를 할당
+        _currentKeyword = keywordFromSearch.trim();
+        _postsFuture = _postService.searchPostsByKeyword(keyword: _currentKeyword);
+      } else {
+        // 검색어가 없거나 비어있으면, 역할(탭) 기반으로 게시물을 가져오는 Future를 할당
+        _currentKeyword = ''; // 검색어 상태 초기화
+        _searchController.clear(); // 탭 변경 시 검색창을 비울지 여부는 UX에 따라 결정
+        _postsFuture = _postService.fetchPosts(isDriverTab: _isDriverTab, keyword: ''); // fetchPosts는 빈 키워드로
+      }
     });
   }
 
@@ -69,11 +80,14 @@ class _PostListScreenState extends State<PostListScreen> {
                       ),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                     ),
+                    onSubmitted: (value) {
+                      _loadPosts(keywordFromSearch: value); // 검색어로 게시물 로드
+                    },
                   ),
                 ),
                 const SizedBox(width: 10),
                 GestureDetector(
-                  onTap: _loadPosts,
+                  onTap: (){_loadPosts(keywordFromSearch: _searchController.text);},
                   child: Container(
                     width: 73,
                     height: 30,
@@ -108,8 +122,10 @@ class _PostListScreenState extends State<PostListScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    if(!_isDriverTab) return; // 이미 탑승자 탭이면 아무 동작도 하지 않음
                     setState(() {
                       _isDriverTab = false;
+                      _searchController.clear(); // 탭 전환 시 검색창 비우기
                     });
                     _loadPosts();
                   },
@@ -124,6 +140,7 @@ class _PostListScreenState extends State<PostListScreen> {
                   onTap: () {
                     setState(() {
                       _isDriverTab = true;
+                      _searchController.clear(); // 탭 전환 시 검색창 비우기
                     });
                     _loadPosts();
                   },
@@ -150,13 +167,14 @@ class _PostListScreenState extends State<PostListScreen> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('에러 발생: ${snapshot.error}', style: theme.bodyLarge));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.directions_car_outlined, size: 50, color: Color(0xFFEB5F5F)),
                         SizedBox(height: 16),
-                        Text('등록된 게시물이 없습니다.'),
+                        Text(_currentKeyword.isEmpty ? '등록된 게시물이 없습니다.' : '검색 결과가 없습니다.',
+                          style: theme.bodyLarge),
                       ],
                     ),
                   );
@@ -165,7 +183,14 @@ class _PostListScreenState extends State<PostListScreen> {
                 final posts = snapshot.data!;
 
                 return RefreshIndicator(
-                  onRefresh: () async => _loadPosts(),
+                  onRefresh: () async {
+                    // 현재 상태에 따라 _loadPosts 호출
+                    if (_currentKeyword.isNotEmpty) {
+                      _loadPosts(keywordFromSearch: _currentKeyword); // 현재 키워드로 새로고침
+                    } else {
+                      _loadPosts(); // 역할 기반으로 새로고침
+                    }
+                  },
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 15),
                     itemCount: posts.length,
