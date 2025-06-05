@@ -17,7 +17,8 @@
   - [8.3. Android 앱 직접 설치 (APK)](#83-android-앱-직접-설치-apk)
 - [9. API 주요 엔드포인트](#9-api-주요-엔드포인트)
 - [10. 폴더 구조](#10-폴더-구조)
-- [11. 개발자](#11-개발자)
+- [11. 애플리케이션 미리보기 (UX/UI 스크린샷)](#11-애플리케이션미리보기). 
+- [12. 개발자](#12-개발자)
 
 ## 1. 프로젝트 개요
 
@@ -221,7 +222,6 @@ campuspool/
 │ │ └── service/ # 비즈니스 로직을 처리하는 서비스 계층
 │ ├── src/main/resources/ # 설정 파일 (application.yml, static/templates 등)
 │ └── build.gradle # Gradle 빌드 스크립트
-├── 기타/ # 추가 제출 자료
 └── README.md # 본 프로젝트 설명 파일
 
  
@@ -229,14 +229,14 @@ campuspool/
 
 CampusPool 앱의 주요 화면과 사용자 인터페이스는 다음과 같습니다.
 
-| 로그인 화면                                      | 게시물 목록(검색)                               | 게시물 등록 화면                                |
+| **로그인 화면**                                  | **게시물 목록(검색)**                            | **게시물 등록 화면**                            |
 | :----------------------------------------------: | :----------------------------------------------: | :---------------------------------------------: |
-| <img src="https://github.com/user-attachments/assets/db34857c-7f5e-432d-ab20-f6d238ba1379" alt="로그인 화면" width="200"> | <img src="https://github.com/user-attachments/assets/73b72462-18d0-4716-98f9-1035a35f5dc8" alt="게시물 목록" width="200"> | <img src="https://github.com/user-attachments/assets/ada4ce69-41d2-4e13-8a8b-44fe6bb3c4d4" alt="게시물 등록" width="200"> |
+| <img src="https://github.com/user-attachments/assets/db34857c-7f5e-432d-ab20-f6d238ba1379" alt="로그인 화면" width="250"> | <img src="https://github.com/user-attachments/assets/73b72462-18d0-4716-98f9-1035a35f5dc8" alt="게시물 목록" width="250"> | <img src="https://github.com/user-attachments/assets/ada4ce69-41d2-4e13-8a8b-44fe6bb3c4d4" alt="게시물 등록" width="250"> |
 
 
-| **채팅 목록 (예약 상태 아이콘)**                   | **채팅 상세 (예약 버튼)**                        | **건의사항 작성**                               |
-
-| <img src="https://github.com/user-attachments/assets/78765ba3-967e-4e9f-845d-e198fe9d9e4a" alt="채팅 목록" width="200"> | <img src="https://github.com/user-attachments/assets/f4c15486-c28d-4850-9669-e47aae97d0d5" alt="채팅 상세" width="200"> | <img src="https://github.com/user-attachments/assets/fa3470e6-5efd-4782-8ba0-61abba0dcf9e" alt="건의사항" width="200"> |
+| **채팅 목록 (예약 상태 아이콘)**                 | **채팅 상세 (예약 버튼)**                        | **건의사항 작성**                               |
+| :----------------------------------------------: | :----------------------------------------------: | :---------------------------------------------: |
+| <img src="https://github.com/user-attachments/assets/78765ba3-967e-4e9f-845d-e198fe9d9e4a" alt="채팅 목록" width="250"> | <img src="https://github.com/user-attachments/assets/f4c15486-c28d-4850-9669-e47aae97d0d5" alt="채팅 상세" width="250"> | <img src="https://github.com/user-attachments/assets/fa3470e6-5efd-4782-8ba0-61abba0dcf9e" alt="건의사항" width="250"> |
 
 ## 12. 개발자
 
