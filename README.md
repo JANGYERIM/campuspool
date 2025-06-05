@@ -231,10 +231,11 @@ CampusPool 앱의 주요 화면과 사용자 인터페이스는 다음과 같습
 
 | 로그인 화면                                      | 게시물 목록(검색)                               | 게시물 등록 화면                                |
 | :----------------------------------------------: | :----------------------------------------------: | :---------------------------------------------: |
-| <img src="https://github.com/user-attachments/assets/db34857c-7f5e-432d-ab20-f6d238ba1379" alt="로그인 화면" width="300"> | <img src="https://github.com/user-attachments/assets/73b72462-18d0-4716-98f9-1035a35f5dc8" alt="게시물 목록" width="300"> | <img src="https://github.com/user-attachments/assets/ada4ce69-41d2-4e13-8a8b-44fe6bb3c4d4" alt="게시물 등록" width="300"> |
+| <img src="https://github.com/user-attachments/assets/db34857c-7f5e-432d-ab20-f6d238ba1379" alt="로그인 화면" width="200"> | <img src="https://github.com/user-attachments/assets/73b72462-18d0-4716-98f9-1035a35f5dc8" alt="게시물 목록" width="200"> | <img src="https://github.com/user-attachments/assets/ada4ce69-41d2-4e13-8a8b-44fe6bb3c4d4" alt="게시물 등록" width="200"> |
+
 
 | **채팅 목록 (예약 상태 아이콘)**                   | **채팅 상세 (예약 버튼)**                        | **건의사항 작성**                               |
-| <img src="https://github.com/user-attachments/assets/78765ba3-967e-4e9f-845d-e198fe9d9e4a" alt="채팅 목록" width="300"> | <img src="https://github.com/user-attachments/assets/f4c15486-c28d-4850-9669-e47aae97d0d5" alt="채팅 상세" width="300"> | <img src="https://github.com/user-attachments/assets/fa3470e6-5efd-4782-8ba0-61abba0dcf9e" alt="건의사항" width="300"> |
+| <img src="https://github.com/user-attachments/assets/78765ba3-967e-4e9f-845d-e198fe9d9e4a" alt="채팅 목록" width="200"> | <img src="https://github.com/user-attachments/assets/f4c15486-c28d-4850-9669-e47aae97d0d5" alt="채팅 상세" width="200"> | <img src="https://github.com/user-attachments/assets/fa3470e6-5efd-4782-8ba0-61abba0dcf9e" alt="건의사항" width="200"> |
 
 ## 12. 개발자
 
