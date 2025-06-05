@@ -235,6 +235,7 @@ CampusPool 앱의 주요 화면과 사용자 인터페이스는 다음과 같습
 
 
 | **채팅 목록 (예약 상태 아이콘)**                   | **채팅 상세 (예약 버튼)**                        | **건의사항 작성**                               |
+
 | <img src="https://github.com/user-attachments/assets/78765ba3-967e-4e9f-845d-e198fe9d9e4a" alt="채팅 목록" width="200"> | <img src="https://github.com/user-attachments/assets/f4c15486-c28d-4850-9669-e47aae97d0d5" alt="채팅 상세" width="200"> | <img src="https://github.com/user-attachments/assets/fa3470e6-5efd-4782-8ba0-61abba0dcf9e" alt="건의사항" width="200"> |
 
 ## 12. 개발자
