@@ -226,5 +226,5 @@ campuspool/
 
 -   **장예림**
     -   GitHub: [https://github.com/JANGYERIM](https://github.com/JANGYERIM)
-    -   Email: `[wkddpfla3@gmail.com]`
+    -   Email: [wkddpfla3@gmail.com]
     -   역할: 프로젝트 기획, 풀스택 개발 (서버 API, 데이터베이스 설계, 클라이언트 UI/UX, 실시간 채팅 및 예약 기능 구현 등 전반적인 개발 담당)
