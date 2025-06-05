@@ -37,23 +37,10 @@
 궁극적으로 CampusPool은 교내 이동의 새로운 대안을 제시하여 학생들의 캠퍼스 생활 만족도를 높이는 데 기여하고자 합니다.
 
 
-## 3. 애플리케이션 스크린샷 (UI/UX 미리보기)
-
-CampusPool 앱의 주요 화면과 사용자 인터페이스는 다음과 같습니다.
-
-| 로그인 화면                                      | 게시물 목록(검색)                               | 게시물 등록 화면                                |
-| :----------------------------------------------: | :----------------------------------------------: | :---------------------------------------------: |
-|     | ![Image](https://github.com/user-attachments/assets/73b72462-18d0-4716-98f9-1035a35f5dc8)
-        | ![image](https://github.com/user-attachments/assets/ada4ce69-41d2-4e13-8a8b-44fe6bb3c4d4) |
-
-| **채팅 목록 (예약 상태 아이콘)**                   | **채팅 상세 (예약 버튼)**                        | **건의사항 작성**                               |
-| ![Image](https://github.com/user-attachments/assets/78765ba3-967e-4e9f-845d-e198fe9d9e4a)| ![Image](https://github.com/user-attachments/assets/f4c15486-c28d-4850-9669-e47aae97d0d5)    | ![Image](https://github.com/user-attachments/assets/fa3470e6-5efd-4782-8ba0-61abba0dcf9e)   |
-
 
 ## 3. 주요 기능
 
 -   👤 **사용자 등록 및 로그인:** 안전한 서비스 이용을 위한 이메일 기반 회원가입 및 로그인 기능을 제공하며, JWT를 활용한 인증 시스템을 구축하였습니다.
-  ![Image](https://github.com/user-attachments/assets/db34857c-7f5e-432d-ab20-f6d238ba1379)
 -   📝 **카풀 게시물 등록 및 목록 조회:**
     -   운전자와 탑승 희망자 모두 자신의 조건(출발지, 도착지, 시간, 요금 등)에 맞는 카풀 게시물을 손쉽게 등록할 수 있습니다.
     -   역할(운전자/탑승자)에 따른 맞춤형 게시물 필터링 기능을 제공하여 사용자가 원하는 정보를 빠르게 찾을 수 있도록 지원합니다. (서버 API: `GET /api/posts/by-role`)
@@ -237,13 +224,22 @@ campuspool/
 ├── 기타/ # 추가 제출 자료
 └── README.md # 본 프로젝트 설명 파일
 
-## 11. 개발자
+ 
+## 11. 애플리케이션 스크린샷 (UI/UX 미리보기)
+
+CampusPool 앱의 주요 화면과 사용자 인터페이스는 다음과 같습니다.
+
+| 로그인 화면                                      | 게시물 목록(검색)                               | 게시물 등록 화면                                |
+| :----------------------------------------------: | :----------------------------------------------: | :---------------------------------------------: |
+| <img src="https://github.com/user-attachments/assets/db34857c-7f5e-432d-ab20-f6d238ba1379" alt="로그인 화면" width="300"> | <img src="https://github.com/user-attachments/assets/73b72462-18d0-4716-98f9-1035a35f5dc8" alt="게시물 목록" width="300"> | <img src="https://github.com/user-attachments/assets/ada4ce69-41d2-4e13-8a8b-44fe6bb3c4d4" alt="게시물 등록" width="300"> |
+
+| **채팅 목록 (예약 상태 아이콘)**                   | **채팅 상세 (예약 버튼)**                        | **건의사항 작성**                               |
+| <img src="https://github.com/user-attachments/assets/78765ba3-967e-4e9f-845d-e198fe9d9e4a" alt="채팅 목록" width="300"> | <img src="https://github.com/user-attachments/assets/f4c15486-c28d-4850-9669-e47aae97d0d5" alt="채팅 상세" width="300"> | <img src="https://github.com/user-attachments/assets/fa3470e6-5efd-4782-8ba0-61abba0dcf9e" alt="건의사항" width="300"> |
+
+## 12. 개발자
 
 -   **장예림**
     -   GitHub: [https://github.com/JANGYERIM](https://github.com/JANGYERIM)
     -   Email: [wkddpfla3@gmail.com]
     -   역할: 프로젝트 기획, 풀스택 개발 (서버 API, 데이터베이스 설계, 클라이언트 UI/UX, 실시간 채팅 및 예약 기능 구현 등 전반적인 개발 담당)
- 
-
-
 
