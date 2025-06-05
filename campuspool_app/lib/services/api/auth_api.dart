@@ -23,6 +23,8 @@ class AuthApi {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('access_token', token);
         await prefs.setString('currentUserId', userId);
+        await prefs.setString('email', email); // 이메일 정보 저장];
+        print('Saved email to SharedPreferences: $email');
         return true;
       } else {
         return false;

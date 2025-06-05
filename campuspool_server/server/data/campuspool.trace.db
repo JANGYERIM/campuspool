@@ -1415,3 +1415,9 @@ delete * FROM POSTS [42001-224]
 2025-06-01 21:34:21.516992+09:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CREATE TABLE posts"; SQL statement:
 SHOW CREATE TABLE posts [42000-224]
+2025-06-05 21:56:50.237264+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "delete [*]* FROM POSTS"; expected "identifier"; SQL statement:
+delete * FROM POSTS [42001-224]
+2025-06-05 22:07:33.228485+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]POSTS DATA"; expected "PREPARE"; SQL statement:
+POSTS DATA [42001-224]

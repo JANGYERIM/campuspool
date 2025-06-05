@@ -32,10 +32,20 @@ spring:
       path: /h2-console
 
   mail:
-    host: smtp.gmail.com
+    host: smtp.naver.com
     port: 587
-    username: wkddpfla3@gmail.com
-    password: 
+    username: dpfla3573@naver.com
+    password: ${NAVER_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: true
+
+
 
 server:
   port: 8080

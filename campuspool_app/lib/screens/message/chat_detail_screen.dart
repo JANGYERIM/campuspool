@@ -110,7 +110,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   void _checkIfCurrentUserIsAuthor() {
     debugPrint("[ChatDetailScreen] _checkIfCurrentUserIsAuthor called. Full widget.postData: ${widget.postData}");
     if (widget.postData.isNotEmpty && currentUser != null) {
-      final String? postAuthorId = widget.postData['user']?['userId']?.toString(); // ✅ Postman 응답 기준 (user 객체 안의 userId)
+      final String? postAuthorId = widget.postData['userId']?.toString(); // ✅ Postman 응답 기준 (user 객체 안의 userId)
       debugPrint("[ChatDetailScreen] Checking author. currentUser: $currentUser, postData Author ID from Key ('user' -> 'userId'): $postAuthorId");
 
       bool determinedIsAuthor = false;

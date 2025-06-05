@@ -127,7 +127,7 @@ class _PostListScreenState extends State<PostListScreen> {
                       _isDriverTab = false;
                       _searchController.clear(); // 탭 전환 시 검색창 비우기
                     });
-                    _loadPosts();
+                    _loadPosts(); //_is DriverTab이 false 일 때 
                   },
                   child: Text(
                     '탑승자',
@@ -142,7 +142,7 @@ class _PostListScreenState extends State<PostListScreen> {
                       _isDriverTab = true;
                       _searchController.clear(); // 탭 전환 시 검색창 비우기
                     });
-                    _loadPosts();
+                    _loadPosts(); // _isDriverTab이 true 일 때
                   },
                   child: Text(
                     '운전자',
