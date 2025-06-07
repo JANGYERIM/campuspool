@@ -200,9 +200,6 @@
 
 ## 10. 폴더 구조
 
-### 10. 폴더 구조
-
-```text
 campuspool/
 ├── campuspool_app/ # Flutter 클라이언트 앱 소스 코드
 │   ├── lib/
