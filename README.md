@@ -229,7 +229,6 @@ campuspool/
 │   └── build.gradle    # Gradle 빌드 스크립트
 │
 └── README.md         # 본 프로젝트 설명 파일
-'''
  
 ## 11. 애플리케이션 스크린샷 (UI/UX 미리보기)
 
