@@ -200,6 +200,7 @@
 
 ## 10. 폴더 구조
 
+<pre>
 campuspool/
 ├── campuspool_app/ # Flutter 클라이언트 앱 소스 코드
 │   ├── lib/
@@ -226,6 +227,8 @@ campuspool/
 │   └── build.gradle    # Gradle 빌드 스크립트
 │
 └── README.md         # 본 프로젝트 설명 파일
+
+</pre>
  
 ## 11. 애플리케이션 스크린샷 (UI/UX 미리보기)
 
