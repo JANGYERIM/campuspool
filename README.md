@@ -182,7 +182,7 @@
 | PUT         | `/api/auth/update`               | 사용자 닉네임 수정            |    O      |
 | GET         | `/api/auth/check-email`          | 이메일 중복 확인              |    X      |
 | POST        | `/api/posts`                     | 새 게시물 등록                |    O      |
-| GET         | `/api/posts/api/posts` (GET `/api/posts`와 중복 확인 필요) | 전체 게시물 목록 조회 | X      |
+| GET         | `/api/posts/api/posts`           | 전체 게시물 목록 조회 | X      |
 | GET         | `/api/posts/{id}`                | 특정 게시물 상세 조회         |    X      |
 | GET         | `/api/posts/by-role`             | 역할 기반 게시물 필터링 조회  |    X      |
 | GET         | `/api/posts/search`              | 키워드 기반 게시물 검색       |    X      |
@@ -199,31 +199,36 @@
 | POST        | `/api/suggestions`               | 건의사항 제출                |    O      |
 
 ## 10. 폴더 구조
+
+### 10. 폴더 구조
+
+```text
 campuspool/
 ├── campuspool_app/ # Flutter 클라이언트 앱 소스 코드
-│ ├── lib/
-│ │ ├── main.dart # 앱 시작점
-│ │ ├── models/ # 데이터 모델 클래스 (PostSummary, ChatRoom, Message, Reservation 등)
-│ │ ├── screens/ # 주요 UI 화면 (PostListScreen, ChatDetailScreen, SuggestionScreen 등)
-│ │ ├── services/ # API 서비스 로직, 상태 관리 (ChatService, PostService, ReservationService 등)
-│ │ ├── utils/ # 유틸리티 함수 (user_util.dart 등)
-│ │ └── widgets/ # 재사용 가능한 공통 UI 위젯
-│ ├── android/ # Android 플랫폼 관련 설정 및 코드
-│ ├── ios/ # iOS 플랫폼 관련 설정 및 코드
-│ └── pubspec.yaml # 프로젝트 의존성 및 메타데이터 관리
+│   ├── lib/
+│   │   ├── main.dart # 앱 시작점
+│   │   ├── models/       # 데이터 모델 클래스 (PostSummary, ChatRoom, Message, Reservation 등)
+│   │   ├── screens/      # 주요 UI 화면 (PostListScreen, ChatDetailScreen, SuggestionScreen 등)
+│   │   ├── services/     # API 서비스 로직, 상태 관리 (ChatService, PostService, ReservationService 등)
+│   │   ├── utils/        # 유틸리티 함수 (user_util.dart 등)
+│   │   └── widgets/      # 재사용 가능한 공통 UI 위젯
+│   ├── android/        # Android 플랫폼 관련 설정 및 코드
+│   ├── ios/            # iOS 플랫폼 관련 설정 및 코드
+│   └── pubspec.yaml    # 프로젝트 의존성 및 메타데이터 관리
+│
 ├── campuspoolspring/ # Spring Boot 서버 소스 코드
-│ ├── src/main/java/com/campuspoolspring/
-│ │ ├── config/ # Spring 설정 (SecurityConfig, WebSocketConfig, WebConfig)
-│ │ ├── controller/ # API 요청을 처리하는 컨트롤러
-│ │ ├── Dto/ # 데이터 전송 객체 (SuggestionRequestDto 등)
-│ │ ├── model/ # JPA 엔티티 및 도메인 모델 (User, Post, Reservation, ChatMessageEntity 등)
-│ │ ├── repository/ # Spring Data JPA 리포지토리 인터페이스
-│ │ ├── security/ # JWT 인증/인가 관련 클래스 (JwtUtil, JwtAuthenticationFilter)
-│ │ └── service/ # 비즈니스 로직을 처리하는 서비스 계층
-│ ├── src/main/resources/ # 설정 파일 (application.yml, static/templates 등)
-│ └── build.gradle # Gradle 빌드 스크립트
-└── README.md # 본 프로젝트 설명 파일
-
+│   ├── src/main/java/com/campuspoolspring/
+│   │   ├── config/       # Spring 설정 (SecurityConfig, WebSocketConfig, WebConfig)
+│   │   ├── controller/   # API 요청을 처리하는 컨트롤러
+│   │   ├── dto/          # 데이터 전송 객체 (Data Transfer Object)
+│   │   ├── model/        # JPA 엔티티 및 도메인 모델 (User, Post, Reservation 등)
+│   │   ├── repository/   # Spring Data JPA 리포지토리 인터페이스
+│   │   ├── security/     # JWT 인증/인가 관련 클래스 (JwtUtil, JwtAuthenticationFilter)
+│   │   └── service/      # 비즈니스 로직을 처리하는 서비스 계층
+│   ├── src/main/resources/ # 설정 파일 (application.yml, static/templates 등)
+│   └── build.gradle    # Gradle 빌드 스크립트
+│
+└── README.md         # 본 프로젝트 설명 파일
  
 ## 11. 애플리케이션 스크린샷 (UI/UX 미리보기)
 
